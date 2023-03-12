@@ -204,8 +204,7 @@ elseif v.ClassName == "Sound" and v.Name == 'PlaySound' then
   v:Stop()            
 end
         end
-    end
-
+    
     task.wait(entityTable.Config.DelayTime)
 
     local enteredRooms = {}
