@@ -182,9 +182,11 @@ Spawner.runEntity = function(entityTable)
         warn("on death screen, mute entity")
 
         for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing then
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' then
                 v:Stop()
-            end
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' then
+  v:Play()            
+end
         end
     end
 
@@ -195,6 +197,14 @@ Spawner.runEntity = function(entityTable)
     end
 
     -- Movement
+  for _, v in next, entityModel:GetDescendants() do
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' then
+                v:Play()
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' then
+  v:Stop()            
+end
+        end
+    end
 
     task.wait(entityTable.Config.DelayTime)
 
