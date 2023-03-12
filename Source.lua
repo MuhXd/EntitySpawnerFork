@@ -197,6 +197,9 @@ end
     end
 
     -- Movement
+
+    
+    task.wait(entityTable.Config.DelayTime)
   for _, v in next, entityModel:GetDescendants() do
             if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' then
                 v:Play()
@@ -205,8 +208,6 @@ elseif v.ClassName == "Sound" and v.Name == 'PlaySound' then
 end
         end
     
-    task.wait(entityTable.Config.DelayTime)
-
     local enteredRooms = {}
 
     entityConnections.movementTick = RS.Stepped:Connect(function()
