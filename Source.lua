@@ -355,12 +355,13 @@ end
         task.spawn(entityTable.Debug.OnEntityFinishedRebound)
         
         if cycle < cyclesConfig.Max then
-                      for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  and  not v.Name == 'PlaySoundSingle' then
-                v:Stop()
+ for _, v in next, entityModel:GetDescendants() do
+    if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  and  not v.Name == 'PlaySoundSingle' then
+         v:Stop()
 elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' then
   v:Play()            
 end
+            
             task.wait(cyclesConfig.WaitTime)
              for _, v in next, entityModel:GetDescendants() do
             if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' then
@@ -369,6 +370,7 @@ elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound
   v:Stop()            
 end
         end
+            end
     end
 
     -- Destroy
