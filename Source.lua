@@ -182,9 +182,9 @@ Spawner.runEntity = function(entityTable)
         warn("on death screen, mute entity")
 
         for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' then
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  and  not v.Name == 'PlaySoundSingle' then
                 v:Stop()
-elseif v.ClassName == "Sound" and v.Name == 'PlaySound' then
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' then
   v:Play()            
 end
         end
@@ -201,9 +201,9 @@ end
     
     task.wait(entityTable.Config.DelayTime)
   for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' then
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' then
                 v:Play()
-elseif v.ClassName == "Sound" and v.Name == 'PlaySound' then
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' then
   v:Stop()            
 end
         end
@@ -335,6 +335,7 @@ end
     end
 
     for cycle = 1, math.max(math.random(cyclesConfig.Min, cyclesConfig.Max), 1) do
+        
         for nodeIdx = 1, #nodes, 1 do
             dragEntity(entityModel, nodes[nodeIdx].Position + Vector3.new(0, 3.5 + entityTable.Config.HeightOffset, 0), entityTable.Config.Speed)
         end
@@ -343,14 +344,30 @@ end
             for nodeIdx = #nodes, 1, -1 do
                 dragEntity(entityModel, nodes[nodeIdx].Position + Vector3.new(0, 3.5 + entityTable.Config.HeightOffset, 0), entityTable.Config.Speed)
             end
+
+        end
+            
         end
 
         -- Rebound finished
 
+    
         task.spawn(entityTable.Debug.OnEntityFinishedRebound)
         
         if cycle < cyclesConfig.Max then
+                      for _, v in next, entityModel:GetDescendants() do
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  and  not v.Name == 'PlaySoundSingle' then
+                v:Stop()
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' then
+  v:Play()            
+end
             task.wait(cyclesConfig.WaitTime)
+             for _, v in next, entityModel:GetDescendants() do
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' then
+                v:Play()
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' then
+  v:Stop()            
+end
         end
     end
 
