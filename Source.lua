@@ -345,22 +345,15 @@ end
                 dragEntity(entityModel, nodes[nodeIdx].Position + Vector3.new(0, 3.5 + entityTable.Config.HeightOffset, 0), entityTable.Config.Speed)
             end
 
-        
-             for _, v in next, entityModel:GetDescendants() do
-    if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  then
-         v:Stop()
-elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
-  v:Play()            
-end
-        end
+
         -- Rebound finished
         task.spawn(entityTable.Debug.OnEntityFinishedRebound)
             
         for _, v in next, entityModel:GetDescendants() do
             if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' then
-                v:Play()
+                v:Stop()
 elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
-  v:Stop()            
+  v:Play()            
 end
                 
         if cycle < cyclesConfig.Max then
@@ -370,6 +363,14 @@ end
                   
       
             end
+                        
+             for _, v in next, entityModel:GetDescendants() do
+    if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  then
+         v:Play()
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
+  v:Stop()            
+end
+        end
     end
 end
 
