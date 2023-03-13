@@ -321,21 +321,7 @@ end
     task.spawn(entityTable.Debug.OnEntityStartMoving)
 
     -- Cycles
-
-    local cyclesConfig = entityTable.Config.Cycles
-
-    if entityTable.Config.BackwardsMovement then
-        local inverseNodes = {}
-
-        for nodeIdx = #nodes, 1, -1 do
-            inverseNodes[#inverseNodes + 1] = nodes[nodeIdx]
-        end
-
-        nodes = inverseNodes
-    end
-
-    for cycle = 1, math.max(math.random(cyclesConfig.Min, cyclesConfig.Max), 1) do
-   
+   for cycle = 1, math.max(math.random(cyclesConfig.Min, cyclesConfig.Max), 1) do
         for nodeIdx = 1, #nodes, 1 do
             dragEntity(entityModel, nodes[nodeIdx].Position + Vector3.new(0, 3.5 + entityTable.Config.HeightOffset, 0), entityTable.Config.Speed)
         end
@@ -344,35 +330,30 @@ end
             for nodeIdx = #nodes, 1, -1 do
                 dragEntity(entityModel, nodes[nodeIdx].Position + Vector3.new(0, 3.5 + entityTable.Config.HeightOffset, 0), entityTable.Config.Speed)
             end
-
+        end
 
         -- Rebound finished
+
+
         task.spawn(entityTable.Debug.OnEntityFinishedRebound)
-            
-        for _, v in next, entityModel:GetDescendants() do
+        
+        if cycle < cyclesConfig.Max then
+              for _, v in next, entityModel:GetDescendants() do
             if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' then
                 v:Stop()
 elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
   v:Play()            
 end
-                
-        if cycle < cyclesConfig.Max then
-
-            
             task.wait(cyclesConfig.WaitTime)
-                  
-      
-            end
-                        
-             for _, v in next, entityModel:GetDescendants() do
+                       for _, v in next, entityModel:GetDescendants() do
     if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  then
          v:Play()
 elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
   v:Stop()            
 end
         end
+        end
     end
-end
 
     -- Destroy
 
