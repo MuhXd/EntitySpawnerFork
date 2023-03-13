@@ -138,7 +138,7 @@ end
 
 Spawner.runEntity = function(entityTable)
     -- Nodes
-
+local cyclesConfig = entityTable.Cycles
     local nodes = {}
 
     for _, room in next, workspace.CurrentRooms:GetChildren() do
