@@ -344,6 +344,7 @@ end
 elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
   v:Play()            
 end
+               end
             task.wait(cyclesConfig.WaitTime)
                        for _, v in next, entityModel:GetDescendants() do
     if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  then
@@ -352,6 +353,7 @@ elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
   v:Stop()            
 end
         end
+            
         end
     end
 
