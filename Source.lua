@@ -368,7 +368,6 @@ end
         task.spawn(entityTable.Debug.OnEntityDespawned)
     end
 end
-end
 Spawner.runJumpscare = function(config)
     -- Variables
 
