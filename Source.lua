@@ -39,7 +39,26 @@ end
 function getPlayerRoot()
     return Char:FindFirstChild("HumanoidRootPart") or Char:FindFirstChild("Head")
 end
-
+function Sound(Mode,enable)
+    if Mode then
+     for _, v in next, entityModel:GetDescendants() do
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' and enable then
+                v:Play()
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' and enable then
+  v:Stop()   
+                end
+end
+      else
+                   for _, v in next, entityModel:GetDescendants() do
+            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' and enable then
+                v:Stop()
+elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' and enable then
+  v:Play()   
+                end
+end
+        
+            end
+    end
 function dragEntity(entityModel, pos, speed)
     local entityConnections = EntityConnections[entityModel]
 
@@ -138,7 +157,7 @@ end
 
 Spawner.runEntity = function(entityTable)
     -- Nodes
-local cyclesConfig = entityTable.Cycles
+
     local nodes = {}
 
     for _, room in next, workspace.CurrentRooms:GetChildren() do
@@ -181,14 +200,7 @@ local cyclesConfig = entityTable.Cycles
     if CG:FindFirstChild("JumpscareGui") or (Plr.PlayerGui.MainUI.Death.HelpfulDialogue.Visible and not Plr.PlayerGui.MainUI.DeathPanelDead.Visible) then
         warn("on death screen, mute entity")
 
-        for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  and  not v.Name == 'PlaySoundSingle' then
-                v:Stop()
-elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' then
-  v:Play()            
-end
-        end
-    end
+         Sound(false,true)
 
     -- Flickering
 
@@ -200,13 +212,8 @@ end
 
     
     task.wait(entityTable.Config.DelayTime)
-  for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' then
-                v:Play()
-elseif v.ClassName == "Sound" and v.Name == 'PlaySound' or v.ClassName == "Sound" and v.Name == 'PlaySoundSingle' then
-  v:Stop()            
-end
-        end
+      Sound(true,true)
+        
     
     local enteredRooms = {}
 
@@ -253,7 +260,7 @@ end
             end
 
             -- Player in sight
-cyclesConfig = entityTable.Config.Cycles
+
             if playerInSight then
                 -- Look at entity
 
@@ -320,9 +327,19 @@ cyclesConfig = entityTable.Config.Cycles
 
     task.spawn(entityTable.Debug.OnEntityStartMoving)
 
-    -- Cycles
-    local cycle = 1
-   for cycle = 1, math.max(math.random(cyclesConfig.Min, cyclesConfig.Max), 1) do
+     local cyclesConfig = entityTable.Config.Cycles
+
+    if entityTable.Config.BackwardsMovement then
+        local inverseNodes = {}
+
+        for nodeIdx = #nodes, 1, -1 do
+            inverseNodes[#inverseNodes + 1] = nodes[nodeIdx]
+        end
+
+        nodes = inverseNodes
+    end
+
+    for cycle = 1, math.max(math.random(cyclesConfig.Min, cyclesConfig.Max), 1) do
         for nodeIdx = 1, #nodes, 1 do
             dragEntity(entityModel, nodes[nodeIdx].Position + Vector3.new(0, 3.5 + entityTable.Config.HeightOffset, 0), entityTable.Config.Speed)
         end
@@ -335,26 +352,12 @@ cyclesConfig = entityTable.Config.Cycles
 
         -- Rebound finished
 
-
         task.spawn(entityTable.Debug.OnEntityFinishedRebound)
         
         if cycle < cyclesConfig.Max then
-              for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' then
-                v:Stop()
-elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
-  v:Play()            
-end
-               end
+                 Sound(false,true)
             task.wait(cyclesConfig.WaitTime)
-                       for _, v in next, entityModel:GetDescendants() do
-    if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound'  then
-         v:Play()
-elseif v.ClassName == "Sound" and v.Name == 'PlaySound'  then
-  v:Stop()            
-end
-        end
-            
+                 Sound(true,true)
         end
     end
 
@@ -369,6 +372,7 @@ end
         task.spawn(entityTable.Debug.OnEntityDespawned)
     end
 end
+    
 Spawner.runJumpscare = function(config)
     -- Variables
 
