@@ -39,7 +39,7 @@ end
 function getPlayerRoot()
     return Char:FindFirstChild("HumanoidRootPart") or Char:FindFirstChild("Head")
 end
-function Sound(Mode,enable)
+function Sound(entityModel,Mode,enable)
     if Mode then
      for _, v in next, entityModel:GetDescendants() do
             if v.ClassName == "Sound" and v.Playing and not v.Name == 'PlaySound' and  not v.Name == 'PlaySoundSingle' and enable then
@@ -200,7 +200,7 @@ Spawner.runEntity = function(entityTable)
     if CG:FindFirstChild("JumpscareGui") or (Plr.PlayerGui.MainUI.Death.HelpfulDialogue.Visible and not Plr.PlayerGui.MainUI.DeathPanelDead.Visible) then
         warn("on death screen, mute entity")
 
-         Sound(false,true)
+         Sound(entityModel,false,true)
 
     -- Flickering
 
@@ -212,7 +212,7 @@ Spawner.runEntity = function(entityTable)
 
     
     task.wait(entityTable.Config.DelayTime)
-      Sound(true,true)
+      Sound(entityModel,true,true)
         
     
     local enteredRooms = {}
@@ -355,9 +355,9 @@ Spawner.runEntity = function(entityTable)
         task.spawn(entityTable.Debug.OnEntityFinishedRebound)
         
         if cycle < cyclesConfig.Max then
-                 Sound(false,true)
+                 Sound(entityModel,false,true)
             task.wait(cyclesConfig.WaitTime)
-                 Sound(true,true)
+                 Sound(entityModel,true,true)
         end
     end
 
